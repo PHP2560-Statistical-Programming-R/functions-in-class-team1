@@ -7,7 +7,7 @@ In your pre-class work you have created the following function:
 
 ## Jackknife of the Mean!
 
-- Have an estimator \(\hat{\theta}\) of parameter $\theta$  
+- Have an estimator $\hat{\theta}$ of parameter $\theta$  
   want the standard error of our estimate, $se_{\hat{\theta}}$
 - The jackknife approximation:
     + omit case $i$, get estimate $\hat{\theta}_{(-i)}$
@@ -18,3 +18,16 @@ In your pre-class work you have created the following function:
 
 
 Your goal for this lab will be to extend the concept of `mean.jackknife`, so that it works in more situations than just the mean. 
+
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
