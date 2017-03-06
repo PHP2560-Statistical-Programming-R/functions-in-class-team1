@@ -7,7 +7,7 @@ In your pre-class work you have created the following function:
 
 ## Jackknife of the Mean!
 
-- Have an estimator $\hat{\theta}$ of parameter $\theta$  
+- Have an estimator \(\hat{\theta}\) of parameter $\theta$  
   want the standard error of our estimate, $se_{\hat{\theta}}$
 - The jackknife approximation:
     + omit case $i$, get estimate $\hat{\theta}_{(-i)}$
