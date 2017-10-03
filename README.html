@@ -119,23 +119,20 @@ $(document).ready(function () {
 </div>
 
 
-<div id="creating-a-jackknife-function-in-r" class="section level1">
-<h1>Creating a JackKnife Function in R</h1>
-<p>In your pre-class work you have created the following function:</p>
-<div id="jackknife-of-the-mean" class="section level2">
-<h2>Jackknife of the Mean!</h2>
+<div id="simulating-gamblers-ruin" class="section level1">
+<h1>Simulating Gamblers Ruin</h1>
+<div id="description-of-problem" class="section level2">
+<h2>Description of Problem</h2>
+<p><a href>Wikipedia</a> describe the Gambler’s Ruin as follows:</p>
+<p>The term gambler’s ruin is a statistical concept expressed in a variety of forms:</p>
 <ul>
-<li>Have an estimator <span class="math inline">\(\hat{\theta}\)</span> of parameter <span class="math inline">\(\theta\)</span><br />
-want the standard error of our estimate, <span class="math inline">\(se_{\hat{\theta}}\)</span></li>
-<li>The jackknife approximation:
-<ul>
-<li>omit case <span class="math inline">\(i\)</span>, get estimate <span class="math inline">\(\hat{\theta}_{(-i)}\)</span></li>
-<li>Take the variance of all the <span class="math inline">\(\hat{\theta}_{(-i)}\)</span></li>
-<li>multiply that variance by <span class="math inline">\(\frac{(n-1)^2}{n}\)</span> to get <span class="math inline">\(\approx\)</span> variance of <span class="math inline">\(\hat{\theta}\)</span></li>
-</ul></li>
-<li>then <span class="math inline">\(se_{\hat{\theta}}=\)</span> square root of that variance</li>
+<li>The original meaning is that a persistent gambler who raises his bet to a fixed fraction of bankroll when he wins, but does not reduce it when he loses, will eventually and inevitably go broke, even if he has a positive expected value on each bet.</li>
+<li>Another common meaning is that a persistent gambler with finite wealth, playing a fair game (that is, each bet has expected value zero to both sides) will eventually and inevitably go broke against an opponent with infinite wealth. Such a situation can be modeled by a random walk on the real number line. In that context it is provable that the agent will return to his point of origin or go broke and is ruined an infinite number of times if the random walk continues forever.</li>
+<li>The result above is a corollary of a general theorem by Christiaan Huygens which is also known as gambler’s ruin. That theorem shows how to compute the probability of each player winning a series of bets that continues until one’s entire initial stake is lost, given the initial stakes of the two players and the constant probability of winning. This is the oldest mathematical idea that goes by the name gambler’s ruin, but not the first idea to which the name was applied.</li>
+<li>The most common use of the term today is that a gambler playing a negative expected value game will eventually go broke, regardless of betting system. This is another corollary to Huygens’ result.</li>
+<li>The concept may be stated as an ironic paradox: Persistently taking beneficial chances is never beneficial at the end. This paradoxical form of gambler’s ruin should not be confused with the gambler’s fallacy, a different concept.</li>
 </ul>
-<p>Your goal for this lab will be to extend the concept of <code>mean.jackknife</code>, so that it works in more situations than just the mean.</p>
+<p>The concept has specific relevance for gamblers; however it also leads to mathematical theorems with wide application and many related results in probability and statistics. Huygens’ result in particular led to important advances in the mathematical theory of probability.</p>
 </div>
 </div>
 

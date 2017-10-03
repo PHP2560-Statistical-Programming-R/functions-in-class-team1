@@ -6,10 +6,56 @@ output: html_document
 ---
 
 
+
+
+# Project Goals
+
+The goal of this project is to work through building functions around the Jackkinfe. We will start with some simple functions and then determine a pattern to build a more general function in the end. 
+
+
+## Jackknife of the Mean!
+
+- Have an estimator $\hat{\theta}$ of parameter $\theta$  
+  want the standard error of our estimate, $se_{\hat{\theta}}$
+- The jackknife approximation:
+    + omit case $i$, get estimate $\hat{\theta}_{(-i)}$
+    + Take the variance of all the $\hat{\theta}_{(-i)}$
+    + multiply that variance by $\frac{(n-1)^2}{n}$ to get $\approx$ variance of $\hat{\theta}$
+- then $se_{\hat{\theta}}=$ square root of that variance
+
+**PHP 2560 Only** (Why $(n-1)^2 / n$?  Think about just getting the standard
+    error of the mean)
+
+
+
+Write a function called `mean.jackknife` that takes argument `a_vector` and returns a jackknife estimate of the standard error.
+
+
+```{r, eval=FALSE}
+mean.jackknife <- function(a_vector) {
+  # Put your function in here
+  return(jackknife.stderr)
+}
+```
+
+
+
+#### Jackknife for the mean Example: test your code here
+
+
+```{r, eval = FALSE}
+some_normals <- rnorm(100,mean=7,sd=5)
+mean(some_normals)
+(formula_se_of_mean <- sd(some_normals)/sqrt(length(some_normals)))
+all.equal(formula_se_of_mean,mean.jackknife(some_normals))
+```
+
+
+
 ##Jackknife for Gamma Parameters
 
 
-Recall our friend the method of moments estimator:
+The following function is a way to calculate the method of moments estimators for the gamma distribution:
 
 ```{r, eval=FALSE}
 gamma.est <- function(the_data) {
@@ -207,7 +253,7 @@ The code for `jackknife()` is still a bit clunky:
   
       }
     ```
-- Write a funcrion that calculate the variance of all the estimates and returns the standard error
+- Write a function that calculate the variance of all the estimates and returns the standard error
 ```{r, eval=FALSE}
 scale_and_sqrt_vars <- function(jackknife.ests,n) {
   
