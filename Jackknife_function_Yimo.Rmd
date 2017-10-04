@@ -33,21 +33,17 @@ Write a function called `mean.jackknife` that takes argument `a_vector` and retu
 mean.jackknife = function(a_vector){
   n = length(a_vector)
   median_vector = vector(length = n)
-  for(i in 1:length){
-    median_vector[i] = a_vector[-i]
+  for(i in 1:n){
+    median_vector[i] = mean(a_vector[-i], na.rm=T)
   }
-  sd_median = sd(median_vector)
-  sd_error = (n-1)^2/n*sd_median
-}
-```
-
-
-```{r, eval=FALSE}
-mean.jackknife <- function(a_vector) {
-  # Put your function in here
+  variance = (sd(median_vector))^2
+  jackknife.stderr = ((n-1)^2/n*variance)^(1/2)
   return(jackknife.stderr)
 }
 ```
+
+
+
 
 
 
