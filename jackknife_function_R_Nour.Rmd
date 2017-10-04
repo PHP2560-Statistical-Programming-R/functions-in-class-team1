@@ -106,7 +106,7 @@ gamma.jackknife <- function(a_vector) {
 
 
 ```{r, eval=FALSE}
-library(purrr)
+
 input <- rgamma(1000, shape=0.1, scale=10)
 gamma.est(input)
 gamma.jackknife(input)
@@ -120,6 +120,15 @@ Write a function called `jackknife.lm` that takes arguments `df`, `formula` and 
 
 ```{r, eval=FALSE}
 jackknife.lm <- function(df,formula,p) {
+  n = nrow(df)
+  coeff.mat <- matrix(nrow = n, ncol = p)
+  jackknife.stderr = vector(length = p)
+  for(i in 1:n) {
+    dflm <- lm(formula = formula , data = df[-i,] )
+   coeff.mat[i,] <- coefficients(dflm)
+    var = apply(coeff.mat, 2, var)
+  jackknife.stderr = sqrt(var*(n-1)^2/n)
+  }
   
   return(jackknife.stderr)
 }
