@@ -188,15 +188,19 @@ take the square roots
 - Write a function `omit.case` that omits a point given the data and returns the data minus that point. Make sure it can handle higher dimensions. 
     ```{r, eval=FALSE}
           omit.case <- function(the_data,omitted_point) {
-        # This should take the data and omit one point at a time and return the new data
+            if(is.vector(the_data)){
+              return(the_data[-omitted_point])
+            }
+            else{return(the_data[-ommited_point,])}
             }
     ```
 - Write a function `omit_and_est` that takes the data with an omitted point and returns whatever function your estimator does.  
     ```{r,eval=FALSE}
     
         omit_and_est <- function(omit) {
-              # This function should take the output of omit.case and use it as input for the estimator
+              if()
         }
+```
 
 
 ```{r, eval=FALSE}
