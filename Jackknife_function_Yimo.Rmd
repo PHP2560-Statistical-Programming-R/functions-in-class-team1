@@ -82,16 +82,13 @@ Write a function called `gamma.jackknife` that takes argument `a_vector` and ret
 ```{r, eval=FALSE }
 gamma.jackknife <- function(a_vector) {
   n = length(a_vector)
-  a_s = vector(length = n)
-  s_s = vector(length = n)
+  parameter = matrix(nrow = n, ncol = 2)
   for(i in 1:n){
-    a_s[i] = gamma.est(a_vector[-i])["a"]
-    s_s[i] = gamma.est(a_vector[-i])["s"]
+    parameter[i,] = gamma.est(a_vector[-i])
   }
-  jackknife.stderrs = vector(length = 2)
-  jackknife.stderrs[1] = mean.jackknife(a_s)
-  jackknife.stderrs[2] = mean.jackknife(s_s)
-  
+  var = apply(parameter, 2, var)
+
+  jackknife.stderrs = sqrt(var*(n-1)^2/n)
   return(jackknife.stderrs)
 }
 ```
@@ -122,9 +119,9 @@ jackknife.lm <- function(df,formula,p) {
     my.lm = lm(formula, data = df[-i,])
     coef_list[i,] = coefficients(my.lm)
   }
-  for(i in 1:p){
-    jackknife.stderr[i] = mean.jackknife(coef_list[,i])
-  }
+  
+  var = apply(coef_list, 2, var)
+  jackknife.stderr = sqrt(var*(n-1)^2/n)
   return(jackknife.stderr)
 }
 ```
@@ -140,7 +137,7 @@ data <- data.frame(output,input)
 my.lm <- lm(output~input, data=data)
 coefficients(my.lm)
 # "Official" standard errors
-sss = sqrt(diag(vcov(my.lm)))
+sqrt(diag(vcov(my.lm)))
 jackknife.lm(df=data,formula="output~input",p=2)
 ```
 
@@ -167,6 +164,7 @@ take the square roots
 - Refactor by extracting the common "omit one" operation
 
 - Refactor by defining a general "jackknife" operation
+
 
 
 
