@@ -36,8 +36,8 @@ mean.jackknife = function(a_vector){
   for(i in 1:n){
     median_vector[i] = mean(a_vector[-i], na.rm=T)
   }
-  variance = (sd(median_vector))^2
-  jackknife.stderr = ((n-1)^2/n*variance)^(1/2)
+  variance = var(median_vector)
+  jackknife.stderr = sqrt((n-1)^2/n*variance)
   return(jackknife.stderr)
 }
 ```
@@ -81,6 +81,16 @@ Write a function called `gamma.jackknife` that takes argument `a_vector` and ret
 
 ```{r, eval=FALSE }
 gamma.jackknife <- function(a_vector) {
+  n = length(a_vector)
+  a_s = vector(length = n)
+  s_s = vector(length = n)
+  for(i in 1:n){
+    a_s[i] = gamma.est(a_vector[-i])["a"]
+    s_s[i] = gamma.est(a_vector[-i])["s"]
+  }
+  jackknife.stderrs = vector(length = 2)
+  jackknife.stderrs[1] = mean.jackknife(a_s)
+  jackknife.stderrs[2] = mean.jackknife(s_s)
   
   return(jackknife.stderrs)
 }
@@ -105,7 +115,16 @@ Write a function called `jackknife.lm` that takes arguments `df`, `formula` and 
 
 ```{r, eval=FALSE}
 jackknife.lm <- function(df,formula,p) {
-  
+  n = nrow(df)
+  coef_list = matrix(nrow = n, ncol = p)
+  jackknife.stderr = vector(length = p)
+  for(i in 1:nrow(df)){
+    my.lm = lm(formula, data = df[-i,])
+    coef_list[i,] = coefficients(my.lm)
+  }
+  for(i in 1:p){
+    jackknife.stderr[i] = mean.jackknife(coef_list[,i])
+  }
   return(jackknife.stderr)
 }
 ```
@@ -121,7 +140,7 @@ data <- data.frame(output,input)
 my.lm <- lm(output~input, data=data)
 coefficients(my.lm)
 # "Official" standard errors
-sqrt(diag(vcov(my.lm)))
+sss = sqrt(diag(vcov(my.lm)))
 jackknife.lm(df=data,formula="output~input",p=2)
 ```
 
