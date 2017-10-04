@@ -36,21 +36,17 @@ Write a function called `mean.jackknife` that takes argument `a_vector` and retu
 ```{r, eval=FALSE}
 mean.jackknife <- function(a_vector) {
   for (i in seq_along(a_vector))
-    a_vector_mean <- mean(a_vector[-i]) %>%
-      var(a_vector_mean) /(length(a_vector)-1)
+    a_vector_mean[i] <- mean(a_vector[-i]) 
+      jackknife<-  var(a_vector_mean) * (((length(a_vector) - 1)^2) / length(a_vector))
+    jackknife.stderr <- sqrt(jackknife)
+
       
   
   return(jackknife.stderr)
 }
 ```
 
-```{r}
-a_vector <- c(1,2,4,6)
- a_vector_mean <- mean(a_vector[-1])
-      var(a_vector_mean) * (1/(length(a_vector)-1))
 
-
-```
 
 #### Jackknife for the mean Example: test your code here
 
@@ -86,10 +82,23 @@ Write a function called `gamma.jackknife` that takes argument `a_vector` and ret
 
 ```{r, eval=FALSE }
 gamma.jackknife <- function(a_vector) {
-  
+  n <- length(a_vector)
+  estimators <- matrix(NA,nrow=2,ncol=n)
+  rownames(estimators) = c("a","s")
+  for (i in 1:n) {
+    est <- gamma.est(a_vector[-i])
+    estimators["a",i] <- est["a"]
+    estimators["s",i] <- est["s"]
+  }
+  var.estimators <- apply(estimators,1,var)
+  jackknife.vars <- ((n-1)^2/n)*var.estimators
+  jackknife.stderrs <- sqrt(jackknife.vars)
   return(jackknife.stderrs)
 }
 ```
+
+
+
 
 
 
@@ -97,6 +106,7 @@ gamma.jackknife <- function(a_vector) {
 
 
 ```{r, eval=FALSE}
+library(purrr)
 input <- rgamma(1000, shape=0.1, scale=10)
 gamma.est(input)
 gamma.jackknife(input)
