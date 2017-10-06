@@ -34,14 +34,14 @@ Write a function called `mean.jackknife` that takes argument `a_vector` and retu
 ```{r, eval=FALSE}
 mean.jackknife <- function(a_vector) {
   # Put your function in here
-  n <- length(a_vector)
-  estimitors <- vector(length = n)
+  n = length(a_vector)
+  estimitors = vector(length = n)
   for (i in 1:n) {
   estimitors[i] = mean(a_vector[-i])
   }
   var.estimators = var(estimitors)
-  jackknife.var <- ((n-1)^2/n)* var.estimators 
-  jackknife.stderr <- sqrt(jackknife.var)
+  jackknife.var = ((n-1)^2/n)* var.estimators 
+  jackknife.stderr = sqrt(jackknife.var)
   return(jackknife.stderr)
 }
 ```
@@ -82,17 +82,17 @@ Write a function called `gamma.jackknife` that takes argument `a_vector` and ret
 
 ```{r}
 gamma.jackknife <- function(a_vector) {
-  n <- length(a_vector)
-  estimators <- matrix(NA,nrow=2,ncol=n)
+  n = length(a_vector)
+  estimators = matrix(NA,nrow=2,ncol=n)
   rownames(estimators) = c("a","s")
   for (i in 1:n) {
     est <- gamma.est(a_vector[-i])
-    estimators["a",i] <- est["a"]
-    estimators["s",i] <- est["s"]
+    estimators["a",i] = est["a"]
+    estimators["s",i] = est["s"]
   }
-  var.estimators <- apply(estimators,1,var)
-  jackknife.vars <- ((n-1)^2/n)*var.estimators
-  jackknife.stderrs <- sqrt(jackknife.vars)
+  var.estimators = apply(estimators,1,var)
+  jackknife.vars = ((n-1)^2/n)*var.estimators
+  jackknife.stderrs = sqrt(jackknife.vars)
   return(jackknife.stderrs)
 }
 ```
@@ -115,8 +115,18 @@ gamma.jackknife(input)
 Write a function called `jackknife.lm` that takes arguments `df`, `formula` and `p` and returns jackknife standard error estimates on the coefficients of a linear regression model. 
 
 ```{r, eval=FALSE}
-jackknife.lm <- function(df,formula,p) {
-  
+
+jackknife.lm <- function(df, formula, p) {
+  n <- nrow(df)
+  estimators <- matrix(0, nrow = p, ncol = n)
+  for (i in 1:n) {
+    my_linear_model = lm(formula, data = df[-i,])
+    estimators[, i] = my_linear_model$coefficients
+  }
+  print(dim(estimators))
+  var.estimators = apply(estimators,1,var)
+  jackknife.var = ((n-1)^2/n)* var.estimators
+  jackknife.stderr = sqrt(jackknife.var)
   return(jackknife.stderr)
 }
 ```
@@ -183,28 +193,34 @@ take the square roots
     ```{r, eval=FALSE}
           omit.case <- function(the_data,omitted_point) {
         # This should take the data and omit one point at a time and return the new data
+            data.dim = dim(the_data)
+            
+            if(is.null(data.dim) || length(data.dim)==1){
+              return(the_data[-omitted_point])
+        }
+        else{return(the_data[-omitted_point,])}
+        }
             }
     ```
 - Write a function `omit_and_est` that takes the data with an omitted point and returns whatever function your estimator does.  
     ```{r,eval=FALSE}
     
-        omit_and_est <- function(omit) {
+        omit_and_est <- function(omit,...) {
               # This function should take the output of omit.case and use it as input for the estimator
-        }
-
+        estimator(omit.case(the_data,omit))
+    }
+    
 
 ```{r, eval=FALSE}
 jackknife <- function(estimator,the_data) {
+    if (is.null(dim(the_data))) { n <- length(the_data) }
+    else { n <- nrow(the_data) }
   
-  # Define n to be lenth or number of rows here
-  
-  
-  
-  jackknife.ests <- matrix(sapply(1:n, omit_and_est), ncol=n)
-  var.of.reestimates <- apply(jackknife.ests,1,var)
-  jackknife.var <- ((n-1)^2/n)* var.of.reestimates
-  jackknife.stderr <- sqrt(jackknife.var)
-  return(jackknife.stderr)
+    jackknife.ests <- matrix(sapply(1:n, omit_and_est), ncol=n)
+    var.of.reestimates <- apply(jackknife.ests,1,var)
+    jackknife.var <- ((n-1)^2/n)* var.of.reestimates
+    jackknife.stderr <- sqrt(jackknife.var)
+    return(jackknife.stderr)
 }
 ```
 
@@ -267,14 +283,22 @@ The code for `jackknife()` is still a bit clunky:
 - write a function that calculates the `n` needed for the above code:
 
     ```{r, eval=FALSE}
-      data_size <- function(the_data) {
-  
+    data_size <- function(the_data) {
+      if (is.null(dim(the_data))) {
+        n <- length(the_data)
       }
+      else {
+      n <- nrow(the_data)
+      }
+      return(n)
+  }
     ```
 - Write a function that calculate the variance of all the estimates and returns the standard error
 ```{r, eval=FALSE}
-scale_and_sqrt_vars <- function(jackknife.ests,n) {
-  
+scale_and_sqrt_vars <- function(jackknife.ests, n) {
+  var.of.reestimates <- apply(jackknife.ests, 1, var)
+  jackknife.var <- ((n - 1) ^ 2 / n) * var.of.reestimates
+  jackknife.stderr <- sqrt(jackknife.var)
   return(jackknife.stderr)
 }
 ```
