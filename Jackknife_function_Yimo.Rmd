@@ -188,33 +188,31 @@ take the square roots
 - Write a function `omit.case` that omits a point given the data and returns the data minus that point. Make sure it can handle higher dimensions. 
     ```{r, eval=FALSE}
           omit.case <- function(the_data,omitted_point) {
-            if(is.vector(the_data)){
+            if(is.vector(the_data) || length(dim(the_data))==1){
               return(the_data[-omitted_point])
             }
-            else{return(the_data[-ommited_point,])}
+            else{return(the_data[-omitted_point,])}
             }
     ```
 - Write a function `omit_and_est` that takes the data with an omitted point and returns whatever function your estimator does.  
     ```{r,eval=FALSE}
     
-        omit_and_est <- function(omit) {
-              if()
-        }
+       
 ```
 
 
 ```{r, eval=FALSE}
 jackknife <- function(estimator,the_data) {
-  
-  # Define n to be lenth or number of rows here
-  
-  
-  
-  jackknife.ests <- matrix(sapply(1:n, omit_and_est), ncol=n)
-  var.of.reestimates <- apply(jackknife.ests,1,var)
-  jackknife.var <- ((n-1)^2/n)* var.of.reestimates
-  jackknife.stderr <- sqrt(jackknife.var)
-  return(jackknife.stderr)
+    if (is.null(dim(the_data))) { n <- length(the_data) }
+    else { n <- nrow(the_data) }
+    omit_and_est <- function(omit) {
+        estimator(omit.case(the_data,omit))
+    }
+    jackknife.ests <- matrix(sapply(1:n, omit_and_est), ncol=n)
+    var.of.reestimates <- apply(jackknife.ests,1,var)
+    jackknife.var <- ((n-1)^2/n)* var.of.reestimates
+    jackknife.stderr <- sqrt(jackknife.var)
+    return(jackknife.stderr)
 }
 ```
 
@@ -278,13 +276,17 @@ The code for `jackknife()` is still a bit clunky:
 
     ```{r, eval=FALSE}
       data_size <- function(the_data) {
-  
+       if (is.null(dim(the_data))) { n <- length(the_data) }
+    else { n <- nrow(the_data) }
+        return(n)
       }
     ```
 - Write a function that calculate the variance of all the estimates and returns the standard error
 ```{r, eval=FALSE}
 scale_and_sqrt_vars <- function(jackknife.ests,n) {
-  
+   var.of.reestimates <- apply(jackknife.ests,1,var)
+    jackknife.var <- ((n-1)^2/n)* var.of.reestimates
+    jackknife.stderr <- sqrt(jackknife.var)
   return(jackknife.stderr)
 }
 ```
