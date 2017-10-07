@@ -291,7 +291,7 @@ scale_and_sqrt_vars <- function(jackknife.ests,n) {
 
 
 
-###Now invoke those functions
+###Now invoke those functions 
 
 ```{r}
 jackknife <- function(estimator,the_data) {
