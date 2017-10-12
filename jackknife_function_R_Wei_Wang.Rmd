@@ -25,8 +25,8 @@ The goal of this project is to work through building functions around the Jackki
 - then $se_{\hat{\theta}}=$ square root of that variance
 
 **PHP 2560 Only** (Why $(n-1)^2 / n$?  Think about just getting the standard error of the mean)
-```
-The t test for the standard error of the mean has (n-1) degrees of freedom. Here we subtract and square it to fit the original data.
+```{r}
+# The t test for the standard error of the mean has (n-1) degrees of freedom. Here we subtract and square it to fit the original data.
 ```
 
 
