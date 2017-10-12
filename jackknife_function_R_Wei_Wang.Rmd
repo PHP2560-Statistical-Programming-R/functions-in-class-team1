@@ -301,7 +301,7 @@ The code for `jackknife()` is still a bit clunky:
             else { n <- nrow(the_data) }
     return(n)
       }
-    ```
+```
 - Write a function that calculate the variance of all the estimates and returns the standard error
 ```{r, echo=TRUE}
 scale_and_sqrt_vars <- function(jackknife.ests,n) {

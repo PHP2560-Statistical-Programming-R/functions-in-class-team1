@@ -155,9 +155,9 @@ want the standard error of our estimate, <span class="math inline">\(se_{\hat{\t
 <h4>Jackknife for the mean Example: test your code here</h4>
 <pre class="r"><code>some_normals &lt;- rnorm(100,mean=7,sd=5)
 mean(some_normals)</code></pre>
-<pre><code>## [1] 7.258222</code></pre>
+<pre><code>## [1] 7.656585</code></pre>
 <pre class="r"><code>(formula_se_of_mean &lt;- sd(some_normals)/sqrt(length(some_normals)))</code></pre>
-<pre><code>## [1] 0.5269375</code></pre>
+<pre><code>## [1] 0.5447142</code></pre>
 <pre class="r"><code>all.equal(formula_se_of_mean, mean.jackknife(some_normals))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
@@ -194,9 +194,9 @@ mean(some_normals)</code></pre>
 <pre class="r"><code>input &lt;- rgamma(1000, shape=0.1, scale=10)
 gamma.est(input)</code></pre>
 <pre><code>##          a          s 
-##  0.0734398 12.3373765</code></pre>
+##  0.1043759 11.4808462</code></pre>
 <pre class="r"><code>gamma.jackknife(input)</code></pre>
-<pre><code>## [1] 0.01342586 2.59696273</code></pre>
+<pre><code>## [1] 0.0157881 2.0008948</code></pre>
 </div>
 </div>
 <div id="jackknife-for-linear-regression-coefficients" class="section level2">
@@ -221,13 +221,13 @@ data &lt;- data.frame(output, input)
 my.lm &lt;- lm(output~input, data = data)
 coefficients(my.lm)</code></pre>
 <pre><code>## (Intercept)       input 
-##   1.1893013   0.6067929</code></pre>
+##   1.2139576   0.6264923</code></pre>
 <pre class="r"><code># &quot;Official&quot; standard errors
 sqrt(diag(vcov(my.lm)))</code></pre>
 <pre><code>## (Intercept)       input 
-##  0.06921007  0.01998915</code></pre>
+##  0.06887414  0.01767748</code></pre>
 <pre class="r"><code>jackknife.lm(df=data,formula=&quot;output~input&quot;,p=2)</code></pre>
-<pre><code>## [1] 0.06970222 0.02104919</code></pre>
+<pre><code>## [1] 0.06921914 0.01814900</code></pre>
 </div>
 </div>
 <div id="refactoring-the-jackknife" class="section level2">
@@ -296,7 +296,7 @@ take the square roots</code></pre>
 <div id="it-works" class="section level3">
 <h3>It works</h3>
 <pre class="r"><code>jackknife(estimator = mean, the_data = some_normals)</code></pre>
-<pre><code>## [1] 0.5269375</code></pre>
+<pre><code>## [1] 0.5447142</code></pre>
 <hr />
 <pre class="r"><code>all.equal(jackknife(estimator = mean,the_data = some_normals),
           mean.jackknife(some_normals))</code></pre>
@@ -313,12 +313,12 @@ take the square roots</code></pre>
 }
 est.coefs(data)</code></pre>
 <pre><code>## (Intercept)       input 
-##   1.1893013   0.6067929</code></pre>
+##   1.2139576   0.6264923</code></pre>
 <hr />
 <pre class="r"><code>all.equal(est.coefs(data), coefficients(my.lm))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>jackknife(estimator=est.coefs,the_data=data)</code></pre>
-<pre><code>## [1] 0.06970222 0.02104919</code></pre>
+<pre><code>## [1] 0.06921914 0.01814900</code></pre>
 <pre class="r"><code>all.equal(jackknife(estimator=est.coefs,the_data=data),
           jackknife.lm(df=data,formula=&quot;output~input&quot;,p=2))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
